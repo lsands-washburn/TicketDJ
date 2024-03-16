@@ -6,6 +6,38 @@
     <title>Ticket List</title>
 </head>
 <body>
-    
+    <h1>Ticket List</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Ticket ID</th>
+                <th>Issue Type</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Assigned To</th>
+                <th>Created By</th>
+                <th>Created Datetime</th>
+                <th>Closed Datetime</th>
+                <th>Modified Datetime</th>
+                <th>Ticket Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.0 }}</td>
+                <td>{{ ticket.1 }}</td>
+                <td>{{ ticket.2 }}</td>
+                <td>{{ ticket.3 }}</td>
+                <td>{{ ticket.4 }}</td>
+                <td>{{ ticket.5 }}</td>
+                <td>{{ ticket.6 }}</td>
+                <td>{{ ticket.7 }}</td>
+                <td>{{ ticket.8 }}</td>
+                <td>{{ ticket.9 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
