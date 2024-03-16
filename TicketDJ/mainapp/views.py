@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 
 from .forms import *
 
@@ -20,6 +21,11 @@ def register(request):
                 user_form.cleaned_data['password']
             )
             new_user.save()
+            
+            #include code to set group
+            user_group = Group.objects.get(name='EndUser')
+            new_user.groups.add(user_group)
+
             return render(request, 'registration/register_done.html',{'new_user': new_user})
 
     else:
