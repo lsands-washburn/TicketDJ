@@ -3,11 +3,19 @@
 {% block title %}Create your account{% endblock %}
 
 {% block content %}
-    <h1>Create your account</h1>
-    <p>Sign up:</p>
-    <form method="post">
-        {{ user_form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Create my account"></p>
-    </form>
+<center>
+    <h3>Create your account</h3>
+</center>
+<div class="window">
+    <div class="window-body">
+        <form method="post">
+            {{ user_form.as_p }}
+            {% csrf_token %}
+            <p><input type="submit" class="button" value="Create my account"></p>
+        </form>
+    </div>
+</div>
+
+
+
 {% endblock %}

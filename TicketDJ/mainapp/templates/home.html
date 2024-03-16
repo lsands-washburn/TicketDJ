@@ -4,13 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-    <!-- Add your CSS links or inline styles here -->
+    <!-- Link to 98.css -->
+    <link rel="stylesheet" href="https://unpkg.com/98.css" />
+    <!-- Link to VT323 font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <!-- Add inline styles for background image -->
+    <style>
+        body {
+            background-image: url('https://mrwallpaper.com/images/hd/bright-rainbow-holographic-light-1qdgjm9cbj332a4v.jpg');
+            background-size: cover;
+            padding: 20px; /* Add padding to center content */
+        }
+        header, main, footer {
+            background-color: rgba(236, 255, 242, 0.6); /* Add background color with transparency */
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 3px; /* Add rounded corners */
+            font-family: 'VT323', monospace; /* Set font-family to VT323 */
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+        }
+        .button {
+            margin: 10px;
+            font-family: 'VT323', monospace; /* Set font-family to VT323 */
+        }
+        p {
+            font-size: 2em; /* Double the size of text within the <p> tag */
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Welcome to My Website</h1>
+        <h2>Welcome to Ticket DJ!</h2>
         <!-- Add navigation links or menu items here -->
     </header>
+    <div class="button-container">
+        <form action="/mainapp" method="get">
+            <button type="submit">Go to Main App</button>
+        </form>
+    </div>
+    <br>
 
     <main>
         <section>
@@ -30,7 +65,6 @@
 
         <!-- Add more sections or content here -->
     </main>
-    <a href="/mainapp" class="button">Go to Main App</a>
 
     <footer>
         <p>&copy; 2024 My Website. All rights reserved.</p>

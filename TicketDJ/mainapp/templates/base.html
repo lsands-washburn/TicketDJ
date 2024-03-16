@@ -1,28 +1,90 @@
-{% load static%}
+{% load static %}
 
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>{% block title %}{% endblock %}</title>
-        <link href="{% static 'css\base.css' %}" rel="stylesheet">
-    </head>
-    <body>
-        <div id="header">
-            <span class="logo">Ticket DJ Authentication Page</span>
-            {% if request.user.is_authenticated %}
-            <ul class="menu">
-                <br>
-                <br>
-                <li {% if section == "dashboard" %} class="selected" {% endif %}>
-                    <a href="{% url 'dashboard' %}">My Dashboard</a>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://unpkg.com/98.css" />
+    <!-- Include additional CSS files as needed -->
+    <!-- Link to Plus Jakarta Sans font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Add your custom CSS styles here if needed -->
+    <style>
+        /* Add custom styles here */
+        body {
+            background-image: url('https://mrwallpaper.com/images/hd/bright-rainbow-holographic-light-1qdgjm9cbj332a4v.jpg');
+            background-size: cover;
+        }
+        .title-bar-text {
+            font-family: 'Plus Jakarta Sans', sans-serif; /* Set font-family to Plus Jakarta Sans */
+        }
+        .button-container form {
+        display: inline-block;
+        margin-right: 10px; /* Adjust spacing between buttons as needed */
+        }
+        h2 {
+            text-align: center;
+        }
+    
+        header, main, footer {
+            background-color: rgba(236, 255, 242, 0.6); /* Add background color with transparency */
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 3px; /* Add rounded corners */
+            font-family: 'Plus Jakarta Sans', sans-serif; /* Set font-family to Plus Jakarta Sans */
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+        }
+        .login-form-container {
+    width: 50%; /* Make the container take up half the page */
+    margin: left; /* left align */
+    padding: 20px; /* Add padding for spacing */
+}
+.signup-form-container {
+    width: 50%; /* Make the container take up half the page */
+    margin: left; /* left align */
+    padding: 20px; /* Add padding for spacing */
+}
 
-                </li>
-            </ul>
-            {% endif %}
+
+        .button {
+            margin: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif; /* Set font-family to Plus Jakarta Sans */
+        }
+        .container {
+    display: flex;
+}
+
+.window {
+    flex: 1;
+    padding: 20px;
+    
+    border-radius: 5px;
+    
+    
+    margin-right: 20px; /* Add spacing between windows */
+}
+
+.window:last-child {
+    margin-right: 0; /* Remove margin from last window */
+}
+    </style>
+</head>
+<body>
+    <div class="window">
+        <div class="title-bar">
+            <div class="title-bar-text">Ticket DJ Authentication Page</div>
         </div>
-        <div id="content">
-            {% block content %}
-            {% endblock %}
+        <div class="window-body">
+            <div id="content">
+                {% block content %}
+                {% endblock %}
+            </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>

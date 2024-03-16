@@ -1,25 +1,40 @@
 {% extends "base.html" %}
 
 {% block title %}Dashboard{% endblock %}
+
 {% block content %}
-    <h1>Dashboard</h1>
-    <p>Hello, {{ request.user.username }}</p>
-    <p>{% for group in user.groups.all %}
-        {{ group }}
-    {% endfor %}</p>
-    <p>This is your home page</p>
+    <p>Logged in as {{ request.user.username }}</p>
+    <div class="button-container">
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+        <form action="{% url 'password_change' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Change password</button>
+        </form>
+        <form action="{% url 'tickets:ticket_list' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">View Ticket List</button>
+        </form>
+    </div>
+    <h2>Dashboard</h2>
 
-    <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
-    <br>
-    <form action="{% url 'password_change' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Change password</button>
-    </form>
-
-    <!-- Add button to direct to the /tickets page -->
-    <a href="{% url 'tickets:ticket_list' %}" class="button">View Tickets</a>
-
+    <div class="container">
+        <div class="window">
+            <div class="title-bar">
+                <div class="title-bar-text">Create Ticket</div>
+            </div>
+            <h2>Window 1</h2>
+            <p>This is the content of window 1.</p>
+        </div>
+        <div class="window">
+            <div class="title-bar">
+                <div class="title-bar-text">My Tickets</div>
+            </div>
+            
+            <h2>Window 2</h2>
+            <p>This is the content of window 2.</p>
+        </div>
+    </div>
 {% endblock %}
