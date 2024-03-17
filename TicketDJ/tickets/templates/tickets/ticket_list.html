@@ -21,7 +21,7 @@
         <div class="sunken-panel" style="height: 120px; width: auto;">
             <table class="interactive">
                 <thead>
-                    <tr>
+                    <tr >
                         <th>Ticket ID</th>
                         <th>Issue Type</th>
                         <th>Description</th>
@@ -35,10 +35,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for ticket in tickets %}
-            <tr>
+                {% for ticket in tickets %}
+                <tr onclick="window.location='{% url 'tickets:ticket_detail' ticket.ticket_id %}'" style="cursor: pointer;">
                 {% for attribute in ticket %}
-                <td>{{ attribute }}</td>
+                    <td>{{ attribute }}</td>
                 {% endfor %}
             </tr>
             {% endfor %}

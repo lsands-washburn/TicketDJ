@@ -38,3 +38,8 @@ class Ticket(models.Model):
     def __str__(self):
         return f"Ticket #{self.ticket_id}: {self.description}"
 
+class Note(models.Model):
+    note_id = models.CharField(max_length=10, primary_key=True)
+    note = models.CharField(max_length=100)
+    created_datetime = models.DateTimeField(auto_now=True)
+    ticket_id = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name = 'assigned_ticket_id')

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Detail</title>
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <style>
+        /* Adjust table width for better appearance */
+        table {
+            width: 100%;
+        }
+        /* Display flex to align elements side by side */
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        /* Adjust panel width */
+        .sunken-panel {
+            width: 48%; /* Adjust as needed */
+            margin-bottom: 20px; /* Add some space between panels */
+        }
+    </style>
+</head>
+<body style="background-color: #c0c0c0;">
+    <div class="Window">
+        <div class="title-bar">
+            <div class="title-bar-text">Ticket Detail</div>
+          </div>
+          <br>
+        <div class="container">
+            <div class="sunken-panel">
+                <h2>Ticket Details</h2>
+                <table>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <td>{{ ticket.ticket_id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Issue Type</th>
+                        <td>{{ ticket.issue_type }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ ticket.description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Priority</th>
+                        <td>{{ ticket.priority }}</td>
+                    </tr>
+                    <tr>
+                        <th>Assigned To</th>
+                        <td>{{ ticket.assigned_to }}</td>
+                    </tr>
+                    <tr>
+                        <th>Created By</th>
+                        <td>{{ ticket.created_by }}</td>
+                    </tr>
+                    <tr>
+                        <th>Created Datetime</th>
+                        <td>{{ ticket.created_datetime }}</td>
+                    </tr>
+                    <tr>
+                        <th>Closed Datetime</th>
+                        <td>{{ ticket.closed_datetime }}</td>
+                    </tr>
+                    <tr>
+                        <th>Modified Datetime</th>
+                        <td>{{ ticket.modified_datetime }}</td>
+                    </tr>
+                    <tr>
+                        <th>Ticket Status</th>
+                        <td>{{ ticket.ticket_status }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="sunken-panel">
+                <h2>Notes</h2>
+                <ul>
+                    {% for note in notes %}
+                        <li>{{ note.created_datetime}} - {{ note.note }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
