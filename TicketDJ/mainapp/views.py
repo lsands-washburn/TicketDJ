@@ -23,8 +23,8 @@ def register(request):
             new_user.save()
             
             #include code to set group
-            #user_group = Group.objects.get(name='EndUser')
-            #new_user.groups.add(user_group)
+            user_group = Group.objects.get(name='EndUser')
+            new_user.groups.add(user_group)
 
             return render(request, 'registration/register_done.html',{'new_user': new_user})
 

@@ -22,8 +22,11 @@ def ticket_list(request):
     cursor = conn.cursor()
 
     # Execute query to fetch tickets
-    cursor.execute("SELECT * FROM Ticket")
-
+    if request.user.groups.filter(name='Technician').exists():
+        cursor.execute("SELECT * FROM Ticket")
+    else:
+        print(request.user.id)
+        cursor.execute("SELECT * FROM Ticket WHERE CREATED_BY = ?", request.user.id)
     # Fetch all tickets
     tickets = cursor.fetchall()
 

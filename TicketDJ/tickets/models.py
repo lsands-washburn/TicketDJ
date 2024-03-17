@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 
 class Ticket(models.Model):
     TICKET_STATUS_CHOICES = [
@@ -37,3 +37,4 @@ class Ticket(models.Model):
 
     def __str__(self):
         return f"Ticket #{self.ticket_id}: {self.description}"
+
