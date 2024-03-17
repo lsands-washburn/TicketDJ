@@ -20,14 +20,45 @@
             width: 48%; /* Adjust as needed */
             margin-bottom: 20px; /* Add some space between panels */
         }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body style="background-color: #c0c0c0;">
     <div class="Window">
         <div class="title-bar">
             <div class="title-bar-text">Ticket Detail</div>
-          </div>
-          <br>
+        </div>
+        <br>
         <div class="container">
             <div class="sunken-panel">
                 <h2>Ticket Details</h2>
@@ -81,8 +112,33 @@
                         <li>{{ note.created_datetime}} - {{ note.note }}</li>
                     {% endfor %}
                 </ul>
+                <button onclick="document.getElementById('modal').style.display='block'">Add Note</button>
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('modal').style.display='none'">&times;</span>
+            <h2>Add Note</h2>
+            <form id="add-note-form" method="post" action="{% url 'tickets:add_note' ticket.ticket_id %}">
+                {% csrf_token %}
+                <label for="note">Note:</label><br>
+                <textarea id="note" name="note" rows="4" cols="50"></textarea><br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Close the modal when the user clicks outside of it
+        window.onclick = function(event) {
+            var modal = document.getElementById('modal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
