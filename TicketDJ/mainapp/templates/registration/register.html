@@ -1,21 +1,17 @@
 {% extends "base.html" %}
-
 {% block title %}Create your account{% endblock %}
 
 {% block content %}
-<center>
+<div class="signup-form-container">
     <h3>Create your account</h3>
-</center>
-<div class="window">
-    <div class="window-body">
-        <form method="post">
-            {{ user_form.as_p }}
-            {% csrf_token %}
-            <p><input type="submit" class="button" value="Create my account"></p>
-        </form>
+    <div class="window">
+        <div class="window-body">
+            <form method="post">
+                {{ user_form.as_p }}
+                {% csrf_token %}
+                <p><input type="submit" class="button" value="Create my account"></p>
+            </form>
+        </div>
     </div>
 </div>
-
-
-
 {% endblock %}

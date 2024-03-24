@@ -2,33 +2,24 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<center>
-    <h1>Login</h1>
+<div class="login-form-container">
+    <h2>Login</h2>
     {% if form.errors %}
-    <p>
-        Check your username and password
-    </p>
-    {% else %}
-    <p>
-        Login Here. If you don't have an account yet, <a href="{% url 'register' %}">Create one</a>
-    </p>
-    {% endif %}
-    <div class ="login-form-container">
-        <form action="{% url 'login' %}" method="post">
-            {{ form.as_p }}
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next }}" />
-            <p>
-                <input type="submit" value="Login" />
-            </p>
-        </form>
-        <p>
-            <a href="{% url 'password_reset' %}">
-                forgot password?
-            </a>
-        </p>
+    <div class="messages">
+        <ul class="errorlist">
+            <li>Check your username and password.</li>
+        </ul>
     </div>
-</center>
+    {% endif %}
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="next" value="{{ next }}" />
+        <p class="button-container">
+            <input type="submit" value="Login" class="button" />
+            <a href="{% url 'register' %}" class="button">Create one</a>
+        </p>
+    </form>
+    <p><a href="{% url 'password_reset' %}">Forgot password?</a></p>
+</div>
 {% endblock %}
-
-
