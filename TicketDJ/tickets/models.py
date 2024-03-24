@@ -24,10 +24,10 @@ class Ticket(models.Model):
         ('urgent', 'Urgent'),
     ]
 
-    ticket_id = models.AutoField(primary_key=True)
-    issue_type = models.CharField(max_length=100, choices=ISSUE_TYPE_CHOICES)
-    description = models.TextField()
-    priority = models.CharField(max_length=100, choices=PRIORITY_CHOICES)
+    ticket_id = models.CharField(max_length=10, primary_key=True)
+    issue_type = models.CharField(max_length=20, choices=ISSUE_TYPE_CHOICES)
+    description = models.TextField(max_length=255)
+    priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES)
     assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='assigned_tickets', blank=True, null=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_tickets')
     created_datetime = models.DateTimeField(auto_now_add=True)
@@ -42,4 +42,5 @@ class Note(models.Model):
     note_id = models.CharField(max_length=10, primary_key=True)
     note = models.CharField(max_length=100)
     created_datetime = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_notes')
     ticket_id = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name = 'assigned_ticket_id')

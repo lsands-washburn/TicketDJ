@@ -1,26 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket List</title>
-    <link rel="stylesheet" href="https://unpkg.com/98.css">
-    <style>
-        /* Adjust table width for better appearance */
-        table {
-            width: 100%;
-        }
-    </style>
-</head>
-<body style="background-color: #c0c0c0;">
-    <div class="Window">
+{% extends "tickets/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+    <div class="Window" style="background-color: white; padding: 20px; height: auto;">
         <div class="title-bar">
             <div class="title-bar-text">Ticket List</div>
           </div>
           <br>
-        <div class="sunken-panel" style="height: 120px; width: auto;">
-            <table class="interactive">
-                <thead>
+        <div class="sunken-panel" style="height: auto; width: auto; overflow-x: auto;">
+            <table class="interactive" style="font-size: 10px;">
+                <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
                     <tr >
                         <th>Ticket ID</th>
                         <th>Issue Type</th>
@@ -46,5 +35,4 @@
             </table>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

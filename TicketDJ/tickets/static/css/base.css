@@ -1,0 +1,124 @@
+/* Reset CSS */
+html, body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, form, label, input, textarea, button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    font-family: 'Muli', sans-serif;
+    background-color: #f4f4f4;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Header CSS */
+#header {
+    background-color: #7702fd;
+    color: #fff;
+    padding: 10px 0;
+}
+
+#header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#header ul.menu {
+    list-style: none;
+}
+
+#header ul.menu li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+#header ul.menu li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#header ul.menu li a:hover {
+    text-decoration: underline;
+}
+
+/* Main content CSS */
+main {
+    padding: 30px 0;
+}
+
+/* Footer CSS */
+footer {
+    background-color: #00274e;
+    color: #fff;
+    padding: 15px 0;
+    text-align: center;
+}
+
+/* Custom CSS for login and registration forms */
+.login-form-container,
+.signup-form-container {
+    width: 80%; /* Make the container take up 80% of the page */
+    padding: 20px; /* Add padding for spacing */
+    box-sizing: border-box; /* Include padding in width calculation */
+    max-width: 400px; /* Limit maximum width for better readability */
+    margin: 20px 0; /* Center align horizontally */
+}
+
+.button-container form {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px; /* Adjust top margin as needed */
+}
+
+h2 {
+    text-align: center;
+}
+
+.header,
+main,
+footer {
+    background-color: rgba(236, 255, 242, 0.6); /* Add background color with transparency */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 3px; /* Add rounded corners */
+    font-family: 'Plus Jakarta Sans', sans-serif; /* Set font-family to Plus Jakarta Sans */
+}
+
+.button {
+    margin: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif; /* Set font-family to Plus Jakarta Sans */
+}
+
+.container {
+    display: flex;
+}
+
+.window {
+    flex: 1;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px auto; /* Center align and add margin for spacing */
+}
+
+.window:last-child {
+    margin-right: 0; /* Remove margin from last window */
+}
+
+/* Center and style the title */
+.title-bar-text {
+    text-align: center;
+    font-size: 32px; /* Set the desired font size */
+    margin-top: 20px; /* Add spacing above the title */
+}
