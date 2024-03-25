@@ -12,13 +12,9 @@ def dashboard(request):
 
 @login_required
 def ticket_list(request):
-<<<<<<< Updated upstream
     # Database connection settings
     conn = db_connect()
 
-=======
-    conn = db_connect()
->>>>>>> Stashed changes
     # Create cursor
     cursor = conn.cursor()
 
@@ -54,21 +50,14 @@ def ticket_detail(request, ticket_id):
 
 @login_required
 def add_note(request, ticket_id):
-<<<<<<< Updated upstream
     # Establish database connection
-=======
->>>>>>> Stashed changes
     conn = db_connect()
     cursor = conn.cursor()
 
     note_text = request.POST.get('note')
     note_id = "N" + str(uuid.uuid4())[:9]
-<<<<<<< Updated upstream
     created_datetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     cursor.execute("INSERT INTO Note (note_id, ticket_id, note, created_datetime, created_by) VALUES (?, ?, ?, ?, ?)", note_id, ticket_id, note_text, created_datetime, request.user.username)
-=======
-    cursor.execute("INSERT INTO Note (note_id, note, ticket_id) VALUES (?, ?, ?)", note_id, note_text, ticket_id)
->>>>>>> Stashed changes
 
     conn.commit()
 
@@ -85,12 +74,7 @@ def db_connect():
     }
 
     # Establish database connection
-<<<<<<< Updated upstream
     conn = pyodbc.connect(
         f"DRIVER={db_settings['driver']};SERVER={db_settings['server']};DATABASE={db_settings['database']};UID={db_settings['user']};PWD={db_settings['password']}"
     )
     return conn
-=======
-    return pyodbc.connect(f"DRIVER={db_settings['driver']};SERVER={db_settings['server']};DATABASE={db_settings['database']};UID={db_settings['user']};PWD={db_settings['password']}"
-    )
->>>>>>> Stashed changes
