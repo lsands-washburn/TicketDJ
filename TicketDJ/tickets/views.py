@@ -22,7 +22,7 @@ def ticket_list(request):
     if request.user.groups.filter(name='Technician').exists():
         cursor.execute("SELECT * FROM Ticket")
     else:
-        cursor.execute("SELECT * FROM Ticket WHERE CREATED_BY = ?", request.user.id)
+        cursor.execute("SELECT * FROM Ticket WHERE CREATED_BY = ?", request.user.username)
     # Fetch all tickets
     tickets = cursor.fetchall()
 
