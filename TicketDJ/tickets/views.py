@@ -151,17 +151,19 @@ def assign_ticket(request):
                    WHERE assigned_to IS NULL
                    ORDER BY created_datetime ASC;""")
     next_ticket = cursor.fetchone()
-    next_ticket_id = next_ticket[0]
-    cursor.close()
-    conn.close()
-    
-    conn = db_connect()
-    cursor = conn.cursor()
-    cursor.execute("""UPDATE Ticket
-                   SET assigned_to = (?)
-                   WHERE ticket_id = (?);""", request.user.username, next_ticket_id)
-    
-    conn.commit()
+    if next_ticket:
+        next_ticket_id = next_ticket[0]
+        cursor.close()
+        conn.close()
+        
+        #assign ticket to current user
+        conn = db_connect()
+        cursor = conn.cursor()
+        cursor.execute("""UPDATE Ticket
+                    SET assigned_to = (?)
+                    WHERE ticket_id = (?);""", request.user.username, next_ticket_id)
+        
+        conn.commit()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
