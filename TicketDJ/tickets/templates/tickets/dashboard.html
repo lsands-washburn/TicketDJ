@@ -1,10 +1,12 @@
 {% extends "tickets/base.html" %}
+{% load auth_extras %}
+
 
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-    <p>Logged in as {{ request.user.username }}</p>
-    <div class="button-container">
+    <div class="button-container" style="position: absolute; top: 20px; right: 20px;">
+        <p>Logged in as {{ request.user.username }}</p>
         <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button type="submit">Logout</button>
@@ -18,25 +20,97 @@
             <button type="submit">View Ticket List</button>
         </form>
     </div>
-    <h2>Dashboard</h2>
-
-    <div class="container">
-        <form action="{% url 'tickets:create_ticket' %}" method="post">
-            {% csrf_token %}
-            <label for="issue_type">Issue Type:</label><br>
-            <input type="text" id="issue_type" name="issue_type"><br><br>
-            
-            <label for="description">Description:</label><br>
-            <textarea id="description" name="description" rows="4" cols="50"></textarea><br><br>
-            
-            <label for="priority">Priority:</label><br>
-            <input type="text" id="priority" name="priority"><br><br>
-            
-            <label for="assigned_to">Assigned To:</label><br>
-            <input type="text" id="assigned_to" name="assigned_to"><br><br>
-            
-            <button type="submit">Create Ticket</button>
-        </form>
+    <div style="display: flex;">
+        <div style="flex: 1; margin-right: 10px;">
+            <h2>Create Ticket</h2>
+            <div style="background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                <div class="container">
+                    <form action="{% url 'tickets:create_ticket' %}" method="post">
+                        {% csrf_token %}
+                        <label for="issue_type">Issue Type:</label><br>
+                        <input type="text" id="issue_type" name="issue_type"><br><br>
+                        
+                        <label for="description">Description:</label><br>
+                        <textarea id="description" name="description" rows="4" cols="50"></textarea><br><br>
+                        
+                        <label for="priority">Priority:</label><br>
+                        <select name="priority" id="id_priority">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                            <option value="urgent">Urgent</option>
+                        </select><br><br>
+                        
+                        <button type="submit">Create Ticket</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div style="flex: 1; margin-left: 10px;">
+            <h2>My Tickets</h2>
+            <div style="background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                <table class="interactive" style="font-size: 10px;">
+                    <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
+                        <tr>
+                            <th>Ticket ID</th>
+                            <th>Issue Type</th>
+                            <th>Priority</th>
+                            <th>Assigned To</th>
+                            <th>Created By</th>
+                            <th>Created Datetime</th>
+                            <th>Closed Datetime</th>
+                            <th>Modified Datetime</th>
+                            <th>Ticket Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ticket in tickets %}
+                        <tr onclick="window.location='{% url 'tickets:ticket_detail' ticket.ticket_id %}'" style="cursor: pointer;">
+                            <td>{{ ticket.ticket_id }}</td>
+                            <td>{{ ticket.issue_type }}</td>
+                            <td>{{ ticket.priority }}</td>
+                            <td>{{ ticket.assigned_to }}</td>
+                            <td>{{ ticket.created_by }}</td>
+                            <td>{{ ticket.created_datetime }}</td>
+                            <td>{{ ticket.closed_datetime }}</td>
+                            <td>{{ ticket.modified_datetime }}</td>
+                            <td>{{ ticket.ticket_status }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% if request.user|has_group:"Technician" %} 
+        <div style="flex: 1; margin-left: 10px;">
+        <h2>Queue Status</h2>
+            <div style="background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                <table class="interactive" style="font-size: 10px;">
+                    <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
+                        <tr></tr>
+                            <th>Issue Type</th>
+                            <th>Total Tickets</th>
+                            <th>Oldest Ticket</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for queue in queue_status %}
+                        <tr>
+                            <td>{{ queue.issue_type }}</td>
+                            <td>{{ queue.queue_total }}</td>
+                            <td>{{ queue.oldest_ticket }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="flex: 1; margin-left: 10px;">
+            <form action="{% url 'tickets:assign_ticket' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Get Ticket</button>
+            </form>
+        </div>
+        {% endif %}
     </div>
-
 {% endblock %}

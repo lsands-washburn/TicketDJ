@@ -10,5 +10,6 @@ urlpatterns = [
     path('add_note/<ticket_id>/', views.add_note, name='add_note'),  
     path('create-ticket/', views.create_ticket, name='create_ticket'),
     path('ticket_created/', views.ticket_created, name='ticket_created'),
+    path('assign_ticket/', views.assign_ticket, name='assign_ticket'),
 ]
 

@@ -9,7 +9,25 @@ from django.contrib import messages
 
 @login_required
 def dashboard(request):
-    return render(request,'ticket/ticket/dashboard.html',{'section': 'dashboard'})
+    conn = db_connect()
+
+    # Create cursor
+    cursor = conn.cursor()
+
+    # Execute query to fetch tickets
+    if request.user.groups.filter(name='Technician').exists():
+        cursor.execute("SELECT * FROM Ticket WHERE ASSIGNED_TO = ?", request.user.username)
+    else:
+        cursor.execute("SELECT * FROM Ticket WHERE CREATED_BY = ?", request.user.username)
+    # Fetch all tickets
+    tickets = cursor.fetchall()
+    print('test')
+    # Close cursor and connection
+    cursor.close()
+    conn.close()
+
+    # Pass tickets to the template for rendering
+    return render(request,'tickets/dashboard.html',{'section': 'dashboard', 'tickets': tickets})
 
 
 @login_required
@@ -19,7 +37,6 @@ def create_ticket(request):
         issue_type = request.POST.get('issue_type')
         description = request.POST.get('description')
         priority = request.POST.get('priority')
-        assigned_to = request.POST.get('assigned_to')
         created_by = request.user.username
         created_datetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         ticket_id = "T" + str(uuid.uuid4())[:9]
@@ -31,7 +48,7 @@ def create_ticket(request):
 
         try:
             # Insert new ticket into the database
-            cursor.execute("INSERT INTO Ticket (ticket_id, issue_type, description, priority, assigned_to, created_by, created_datetime, ticket_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (ticket_id, issue_type, description, priority, assigned_to, created_by, created_datetime, ticket_status))
+            cursor.execute("INSERT INTO Ticket (ticket_id, issue_type, description, priority, created_by, created_datetime, ticket_status) VALUES (?, ?, ?, ?, ?, ?, ?)", (ticket_id, issue_type, description, priority, created_by, created_datetime, ticket_status))
 
             # Commit changes
             conn.commit()
@@ -121,6 +138,30 @@ def add_note(request, ticket_id):
 
     conn.commit()
 
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@login_required
+def assign_ticket(request):
+    conn = db_connect()
+    cursor = conn.cursor()
+    #get oldest ticket
+    cursor.execute("""SELECT TOP 1 ticket_id 
+                   FROM ticket
+                   WHERE assigned_to IS NULL
+                   ORDER BY created_datetime ASC;""")
+    next_ticket = cursor.fetchone()
+    next_ticket_id = next_ticket[0]
+    cursor.close()
+    conn.close()
+    
+    conn = db_connect()
+    cursor = conn.cursor()
+    cursor.execute("""UPDATE Ticket
+                   SET assigned_to = (?)
+                   WHERE ticket_id = (?);""", request.user.username, next_ticket_id)
+    
+    conn.commit()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
