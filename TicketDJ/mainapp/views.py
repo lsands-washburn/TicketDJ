@@ -9,7 +9,7 @@ from .forms import *
 
 @login_required
 def dashboard(request):
-    return render(request,'registration/dashboard.html',{'section': 'dashboard'})
+    return render(request,'tickets/dashboard.html',{'section': 'dashboard'})
 
 def register(request):
     if request.method == 'POST':

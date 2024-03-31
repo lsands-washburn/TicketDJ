@@ -1,14 +1,74 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 import pyodbc
 from django.http import HttpResponseRedirect
 import uuid
 import datetime
+from django.contrib import messages
 
 
 @login_required
 def dashboard(request):
     return render(request,'ticket/ticket/dashboard.html',{'section': 'dashboard'})
+
+
+@login_required
+def create_ticket(request):
+    if request.method == 'POST':
+        # Retrieve form data
+        issue_type = request.POST.get('issue_type')
+        description = request.POST.get('description')
+        priority = request.POST.get('priority')
+        assigned_to = request.POST.get('assigned_to')
+        created_by = request.user.username
+        created_datetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        ticket_id = "T" + str(uuid.uuid4())[:9]
+        ticket_status = "Open"
+
+        # Establish database connection
+        conn = db_connect()
+        cursor = conn.cursor()
+
+        try:
+            # Insert new ticket into the database
+            cursor.execute("INSERT INTO Ticket (ticket_id, issue_type, description, priority, assigned_to, created_by, created_datetime, ticket_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (ticket_id, issue_type, description, priority, assigned_to, created_by, created_datetime, ticket_status))
+
+            # Commit changes
+            conn.commit()
+            cursor.close()
+            conn.close()
+
+            # Store ticket information in session
+            request.session['ticket_info'] = {
+                'ticket_id': ticket_id,
+                'issue_type': issue_type,
+                'description': description,
+                'priority': priority
+            }
+
+            # Redirect to ticket created page
+            return redirect('tickets:ticket_created')  # Adjust the URL name if needed
+        except Exception as e:
+            # Handle any database errors
+            # Log the error
+            print(f"Error creating ticket: {e}")
+            # Set error message directly
+            request.session['ticket_error'] = True
+            return redirect('dashboard')  # Adjust the URL name if needed
+
+    else:
+        # If not a POST request, redirect to the dashboard
+        return redirect('dashboard')  # Adjust the URL name if needed
+
+@login_required
+def ticket_created(request):
+    ticket_info = request.session.pop('ticket_info', None)
+    if ticket_info:
+        return render(request, 'tickets/ticket_created.html', {'ticket_info': ticket_info})
+    else:
+        # Handle case where ticket information is not available
+        return redirect('dashboard')  # or render an error page
+
 
 @login_required
 def ticket_list(request):

@@ -1,6 +1,6 @@
 {% extends "tickets/base.html" %}
 
-{% block title %}Dashboard 2{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block content %}
     <p>Logged in as {{ request.user.username }}</p>
@@ -21,20 +21,22 @@
     <h2>Dashboard</h2>
 
     <div class="container">
-        <div class="window">
-            <div class="title-bar">
-                <div class="title-bar-text">Create Ticket</div>
-            </div>
-            <h2>Window 1</h2>
-            <p>This is the content of window 1.</p>
-        </div>
-        <div class="window">
-            <div class="title-bar">
-                <div class="title-bar-text">My Tickets</div>
-            </div>
+        <form action="{% url 'tickets:create_ticket' %}" method="post">
+            {% csrf_token %}
+            <label for="issue_type">Issue Type:</label><br>
+            <input type="text" id="issue_type" name="issue_type"><br><br>
             
-            <h2>Window 2</h2>
-            <p>This is the content of window 2.</p>
-        </div>
+            <label for="description">Description:</label><br>
+            <textarea id="description" name="description" rows="4" cols="50"></textarea><br><br>
+            
+            <label for="priority">Priority:</label><br>
+            <input type="text" id="priority" name="priority"><br><br>
+            
+            <label for="assigned_to">Assigned To:</label><br>
+            <input type="text" id="assigned_to" name="assigned_to"><br><br>
+            
+            <button type="submit">Create Ticket</button>
+        </form>
     </div>
+
 {% endblock %}

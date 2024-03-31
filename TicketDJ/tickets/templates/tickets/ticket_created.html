@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Ticket Created{% endblock %}
+
+{% block content %}
+<center>
+    <h1>Ticket Created</h1>
+    <p>Your ticket has been successfully created with the following details:</p>
+    <ul>
+        <li><strong>Issue Type:</strong> {{ ticket_info.issue_type }}</li>
+        <li><strong>Description:</strong> {{ ticket_info.description }}</li>
+        <li><strong>Priority:</strong> {{ ticket_info.priority }}</li>
+    </ul>
+    <form action="{% url 'dashboard' %}" method="get">
+        <button type="submit">Back</button>
+    </form>
+</center>
+{% endblock %}
+
