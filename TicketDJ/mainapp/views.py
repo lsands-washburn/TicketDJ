@@ -49,8 +49,14 @@ def register(request):
             user_group = Group.objects.get(name='EndUser')
             new_user.groups.add(user_group)
 
-            return render(request, 'registration/register_done.html',{'new_user': new_user})
+            #add user to sqlserver db
+            conn = db_connect()
+            cursor = conn.cursor()
 
+            cursor.execute("""INSERT INTO Helpdesk_User (username, email, first_name, last_name) VALUES (?, ?, ?, ?);""", [new_user.username, new_user.email, new_user.first_name, new_user.last_name])
+            conn.commit()
+
+            return render(request, 'registration/register_done.html',{'new_user': new_user})
     else:
         user_form = UserRegistrationForm()
     return render(request, 'registration/register.html', {'user_form': user_form})
