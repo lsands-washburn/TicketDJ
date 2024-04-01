@@ -28,7 +28,12 @@
                     <form action="{% url 'tickets:create_ticket' %}" method="post">
                         {% csrf_token %}
                         <label for="issue_type">Issue Type:</label><br>
-                        <input type="text" id="issue_type" name="issue_type"><br><br>
+                        <select name="issue_type" id="id_issue_type">
+                            <option value="bug">Bug</option>
+                            <option value="feature request">Feature Request</option>
+                            <option value="question">Question</option>
+                            <option value="other">Other</option>
+                        </select><br><br>
                         
                         <label for="description">Description:</label><br>
                         <textarea id="description" name="description" rows="4" cols="50"></textarea><br><br>
