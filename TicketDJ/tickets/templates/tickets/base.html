@@ -101,6 +101,20 @@
     </style>
 </head>
 <body>
+    <div class="button-container" style="position: absolute; top: 20px; right: 20px;">
+        <p>Logged in as {{ request.user.username }}</p>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+        <form action="{% url 'password_change' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Change password</button>
+        </form>
+        <form action="{% url 'tickets:ticket_list' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">View Ticket List</button>
+        </form>
     <div class="window">
         <div class="title-bar">
             <div class="title-bar-text">Ticket DJ Dashboard</div>
