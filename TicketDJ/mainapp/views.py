@@ -13,9 +13,9 @@ def dashboard(request):
     conn = db_connect()
     cursor = conn.cursor()
     if request.user.groups.filter(name='Technician').exists():
-        cursor.execute("SELECT * FROM Ticket WHERE ASSIGNED_TO = ?", request.user.username)
+        cursor.execute("SELECT * FROM Ticket WHERE ASSIGNED_TO = ? and ticket_status in ('Open', 'In Progress')", request.user.username)
     else:
-        cursor.execute("SELECT * FROM Ticket WHERE CREATED_BY = ?", request.user.username)
+        cursor.execute("SELECT * FROM Ticket WHERE CREATED_BY = ? and ticket_status in ('Open', 'In Progress')", request.user.username)
     tickets = cursor.fetchall()
     cursor.close()
     conn.close()

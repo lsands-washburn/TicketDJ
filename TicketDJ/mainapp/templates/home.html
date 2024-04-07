@@ -6,59 +6,110 @@
     <title>Home Page</title>
     <!-- Link to 98.css -->
     <link rel="stylesheet" href="https://unpkg.com/98.css" />
-    <!-- Link to VT323 font from Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <!-- Add inline styles for background image -->
+    <!-- Link to Open Sans font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Add custom styles -->
     <style>
         body {
-            background-image: url('https://mrwallpaper.com/images/hd/bright-rainbow-holographic-light-1qdgjm9cbj332a4v.jpg');
-            background-size: cover;
-            padding: 20px; /* Add padding to center content */
+            background-color: #f9f9f9; /* Light gray background */
+            font-family: 'Open Sans', sans-serif; /* Set font-family to Open Sans */
+            color: #333; /* Dark text color */
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
         }
-        header, main, footer {
-            background-color: rgba(236, 255, 242, 0.6); /* Add background color with transparency */
+        header {
+            background-color: #007bff; /* Primary blue color */
+            color: #fff; /* White text color */
             padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 3px; /* Add rounded corners */
-            font-family: 'VT323', monospace; /* Set font-family to VT323 */
+            text-align: center;
+            border-bottom: 2px solid #0056b3; /* Darker blue border */
         }
         .button-container {
             display: flex;
             justify-content: center;
+            margin-top: 20px;
         }
         .button {
-            margin: 10px;
-            font-family: 'VT323', monospace; /* Set font-family to VT323 */
+            padding: 12px 24px; /* Increased padding for better clickability */
+            font-size: 16px;
+            font-weight: 600; /* Bold font weight for button */
+            background-color: #007bff;
+            color: #fff;
+            border: 2px solid #007bff; /* Added border for button */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Added transition effects */
+        }
+        .button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            border-color: #0056b3; /* Darker border on hover */
+        }
+        main {
+            padding: 20px;
+        }
+        section {
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #007bff; /* Primary blue for headings */
+            font-weight: 600; /* Bold font weight for headings */
+            margin-bottom: 10px; /* Added margin bottom for headings */
         }
         p {
-            font-size: 2em; /* Double the size of text within the <p> tag */
+            margin-bottom: 20px; /* Added margin bottom for paragraphs */
+            font-size: 18px; /* Increased font size for summary */
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+            font-size: 20px; /* Increased font size for list items */
+        }
+        footer {
+            background-color: #333; /* Dark background color for footer */
+            color: #fff; /* White text color */
+            text-align: center;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
     <header>
-        <h2>Welcome to Ticket DJ!</h2>
+        <h1>Welcome to Ticket DJ!</h1>
         <!-- Add navigation links or menu items here -->
     </header>
     <div class="button-container">
         <form action="/mainapp" method="get">
-            <button type="submit">Go to Main App</button>
+            <button type="submit" class="button">Go to Main App</button>
         </form>
     </div>
-    <br>
 
     <main>
         <section>
-            <h2>About Us</h2>
-            <p>This is a brief description of our website or company.</p>
+            <h2>Capstone Project Summary</h2>
+            <p>The Capstone project aims to develop a comprehensive helpdesk application 
+            designed to streamline and enhance customer support services. 
+            The application will provide a centralized platform for users to submit support tickets. 
+            The goal is to improve response times, resolve issues effectively, and enhance overall customer 
+            satisfaction through a user-friendly and responsive helpdesk system.</p>
         </section>
-
+		<section>
+			<h2> Team Members</h2>
+				<ul>
+				<li>Jeff Williams</li>
+				<li>Lucas Sands</li>
+				<li>John Smalley</li>
+				</ul>
+		</section>
         <section>
-            <h2>Services</h2>
+            <h2>Tools Used</h2>
             <ul>
-                <li>Service 1</li>
-                <li>Service 2</li>
-                <li>Service 3</li>
+                <li>Django Python</li>
+                <li>Azure SQL Server</li>
+                <li>HTML</li>
                 <!-- Add more services as needed -->
             </ul>
         </section>
@@ -67,7 +118,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 My Website. All rights reserved.</p>
+        <p>&copy; 2024 Ticket DJ All rights reserved.</p>
         <!-- Add footer links or additional information here -->
     </footer>
 

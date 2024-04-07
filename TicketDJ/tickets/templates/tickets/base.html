@@ -115,6 +115,10 @@
             {% csrf_token %}
             <button type="submit">View Ticket List</button>
         </form>
+        <form action="{% url 'tickets:dashboard' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Return to Dashboard</button>
+        </form>
     </div>
     <div class="window">
         <div class="title-bar">

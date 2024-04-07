@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 import uuid
 import datetime
 from django.contrib import messages
-
+from django.contrib.auth.models import User
 
 @login_required
 def dashboard(request):
@@ -16,9 +16,9 @@ def dashboard(request):
 
     # Execute query to fetch tickets
     if request.user.groups.filter(name='Technician').exists():
-        cursor.execute("SELECT * FROM Ticket WHERE ASSIGNED_TO = ?", request.user.username)
+        cursor.execute("SELECT * FROM Ticket WHERE ASSIGNED_TO = ? and ticket_status in ('Open', 'In Progress')", request.user.username)
     else:
-        cursor.execute("SELECT * FROM Ticket WHERE CREATED_BY = ?", request.user.username)
+        cursor.execute("SELECT * FROM Ticket WHERE CREATED_BY = ? and ticket_status in ('Open', 'In Progress')", request.user.username)
     # Fetch all tickets
     tickets = cursor.fetchall()
     print('test')
@@ -99,7 +99,7 @@ def ticket_list(request):
     if request.user.groups.filter(name='Technician').exists():
         cursor.execute("SELECT * FROM Ticket")
     else:
-        cursor.execute("SELECT * FROM Ticket WHERE CREATED_BY = ?", request.user.username)
+        cursor.execute("SELECT * FROM Ticket WHERE CREATED_BY = ? and ticket_status in ('Open', 'In Progress')", request.user.username)
     # Fetch all tickets
     tickets = cursor.fetchall()
 
@@ -117,13 +117,80 @@ def ticket_detail(request, ticket_id):
 
     cursor.execute("SELECT * FROM Ticket WHERE Ticket_Id = ?", ticket_id)
     ticket = cursor.fetchone()
+    if not ticket:
+        # Handle case where ticket is not found
+        return render(request, 'tickets/not_found.html', {'ticket_id': ticket_id})
 
-    cursor.execute("SELECT * FROM Note WHERE Ticket_Id = ?", ticket_id)
-    notes = cursor.fetchall()
+    if request.user.groups.filter(name='Technician').exists() or ticket.created_by == request.user.username:
+        cursor.execute("SELECT * FROM Note WHERE Ticket_Id = ?", ticket_id)
+        notes = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        return render(request, 'tickets/ticket_detail.html', {'ticket': ticket, 'notes': notes})
+    else:
+        return render(request, 'tickets/unauthorized.html')
+    
+@login_required
+def update_ticket(request, ticket_id):
+    conn = db_connect()
+    cursor = conn.cursor()
 
-    cursor.close()
-    conn.close()
-    return render(request, 'tickets/ticket_detail.html', {'ticket': ticket, 'notes': notes})
+    cursor.execute("SELECT * FROM Ticket WHERE Ticket_Id = ?", ticket_id)
+    ticket = cursor.fetchone()
+    if not ticket:
+        # Handle case where ticket is not found
+        return render(request, 'tickets/not_found.html', {'ticket_id': ticket_id})
+    else:
+        if request.user.groups.filter(name='Technician').exists() or ticket.created_by == request.user.username:
+            issue_type = request.POST.get('issue_type')
+            description = request.POST.get('description')
+            priority = request.POST.get('priority')
+            assigned_to = request.POST.get('assigned_to')
+            ticket_status = request.POST.get('ticket_status')
+            cursor.execute("""
+                UPDATE Ticket
+                SET issue_type = ?,
+                    description = ?,
+                    priority = ?,
+                    assigned_to = ?,
+                    ticket_status = ?
+                    WHERE ticket_id = ?
+                """,
+                issue_type,
+                description,
+                priority,
+                assigned_to,
+                ticket_status,
+                ticket_id
+                )
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return render(request, 'tickets/ticket_detail.html', {'ticket': ticket})
+            
+        else:
+            cursor.close()
+            conn.close()
+            return render(request, 'tickets/unauthorized.html')
+    
+@login_required
+def modify_ticket(request, ticket_id):
+    conn = db_connect()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM Ticket WHERE Ticket_Id = ?", ticket_id)
+    ticket = cursor.fetchone()
+    if not ticket:
+        # Handle case where ticket is not found
+        return render(request, 'tickets/not_found.html', {'ticket_id': ticket_id})
+
+    if request.user.groups.filter(name='Technician').exists() or ticket.created_by == request.user.username:
+        users = User.objects.filter(groups__name='Technician')
+        return render(request, 'tickets/modify_ticket.html', {'ticket' : ticket, 'users': users})
+    else:
+        return render(request, 'tickets/unauthorized.html')
+
 
 @login_required
 def add_note(request, ticket_id):
@@ -148,7 +215,7 @@ def assign_ticket(request):
     #get oldest ticket
     cursor.execute("""SELECT TOP 1 ticket_id 
                    FROM ticket
-                   WHERE assigned_to IS NULL
+                   WHERE assigned_to IS NULL AND ticket_status in ('Open', 'In Progress')
                    ORDER BY created_datetime ASC;""")
     next_ticket = cursor.fetchone()
     if next_ticket:
