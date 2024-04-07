@@ -52,6 +52,7 @@
                         <td>{{ ticket.ticket_status }}</td>
                     </tr>
                 </table>
+            <button onclick="location.href='{% url 'tickets:modify_ticket' ticket.ticket_id %}'">Modify Ticket</button>
             </div>
             <div style="background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                 <h2>Notes</h2>

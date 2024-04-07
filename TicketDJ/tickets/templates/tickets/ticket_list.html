@@ -10,10 +10,9 @@
         <div class="sunken-panel" style="height: auto; width: auto; overflow-x: auto;">
             <table class="interactive" style="font-size: 10px;">
                 <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
-                    <tr >
+                    <tr>
                         <th>Ticket ID</th>
                         <th>Issue Type</th>
-                        <th>Description</th>
                         <th>Priority</th>
                         <th>Assigned To</th>
                         <th>Created By</th>
@@ -24,13 +23,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for ticket in tickets %}
-                <tr onclick="window.location='{% url 'tickets:ticket_detail' ticket.ticket_id %}'" style="cursor: pointer;">
-                {% for attribute in ticket %}
-                    <td>{{ attribute }}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
+                    {% for ticket in tickets %}
+                    <tr onclick="window.location='{% url 'tickets:ticket_detail' ticket.ticket_id %}'" style="cursor: pointer;">
+                        <td>{{ ticket.ticket_id }}</td>
+                        <td>{{ ticket.issue_type }}</td>
+                        <td>{{ ticket.priority }}</td>
+                        <td>{{ ticket.assigned_to }}</td>
+                        <td>{{ ticket.created_by }}</td>
+                        <td>{{ ticket.created_datetime }}</td>
+                        <td>{{ ticket.closed_datetime }}</td>
+                        <td>{{ ticket.modified_datetime }}</td>
+                        <td>{{ ticket.ticket_status }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
