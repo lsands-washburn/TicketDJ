@@ -1,0 +1,40 @@
+{% extends "tickets/base.html" %}
+{% load auth_extras %}
+
+{% block title %}Admin Panel{% endblock %}
+
+{% block content %}
+<div class="ticket-statistics">
+    <h2>Ticket Statistics</h2>
+    <table class="statistics-table">
+        <thead>
+            <tr>
+                <th>Query</th>
+                <th>Label</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Ticket Status Distribution</td>
+                <td>Ticket Status</td>
+                <td>
+                    {% for status in ticket_status_distribution %}
+                        {{ status.ticket_status }}: {{ status.count }}<br>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>Issue Type Distribution</td>
+                <td>Issue Type</td>
+                <td>
+                    {% for issue_type in issue_type_distribution %}
+                        {{ issue_type.issue_type }}: {{ issue_type.count }}<br>
+                    {% endfor %}
+                </td>
+            </tr>
+            
+        </tbody>
+    </table>
+</div>
+{% endblock %}
