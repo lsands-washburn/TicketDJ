@@ -122,3 +122,152 @@ footer {
     font-size: 32px; /* Set the desired font size */
     margin-top: 20px; /* Add spacing above the title */
 }
+.dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.create-ticket,
+.ticket-section {
+    flex: 1;
+}
+
+.ticket-section {
+    display: flex;
+    gap: 20px;
+}
+
+.ticket-form-container,
+.ticket-table-container,
+.queue-status {
+    background-color: #EBEBEB;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.ticket-table,
+.queue-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ticket-table th,
+.ticket-table td,
+.queue-table th,
+.queue-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.ticket-table tbody tr:hover,
+.queue-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.get-ticket-form {
+    margin-top: 20px;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+        /* Add custom styles here */
+        body {
+            background-color: #D5F1FF;
+            background-image: url({% static "background.jpg" %});
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            font-family: 'Muli', sans-serif;
+            line-height: 1.6;
+        }
+
+        .window {
+            flex: 1;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            max-width: 800px;
+            margin-left: 0;
+        }
+
+        .window-body {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 3px;
+        }
+
+        .login-form-container,
+        .signup-form-container {
+            width: 80%;
+            padding: 20px;
+            box-sizing: border-box;
+            max-width: 400px;
+            margin: 20px auto; /* Center align the forms */
+            background-color: transparent;
+        }
+
+        .button-container form {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        /* Add styles for form elements */
+        .signup-form-container label {
+            display: block; /* Display labels in block */
+            margin-bottom: 5px; /* Reduce margin between label and textbox */
+        }
+
+        .signup-form-container input[type="text"],
+        .signup-form-container input[type="email"],
+        .signup-form-container input[type="password"] {
+            width: 100%; /* Make textboxes full width */
+            margin-bottom: 10px; /* Add margin between textboxes */
+        }
+
+        .signup-form-container input[type="submit"] {
+            margin-top: 15px; /* Add margin above submit button */
+        }
+
+        /* Style for validation text */
+        .validation-text {
+            font-size: 14px;
+            color: #888; /* Adjust color for better readability */
+        }
+
+        /* Footer styles */
+        footer {
+            color: #000; /* Set text color to black */
+            padding: 15px 0;
+            text-align: center;
+        }
+        /*css for table elements*/
+        th {
+            white-space: nowrap;
+        }
+        td {
+            white-space: nowrap;
+        }
+
+        
