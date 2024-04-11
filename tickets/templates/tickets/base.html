@@ -98,32 +98,122 @@
         td {
             white-space: nowrap;
         }
+        /* CSS for table elements */
+.ticket-table,
+.queue-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.ticket-table th,
+.ticket-table td,
+.queue-table th,
+.queue-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.ticket-table tbody,
+.queue-table tbody {
+    background-color: #f2f2f2;
+}
+
+.ticket-table tbody tr:hover,
+.queue-table tbody tr:hover {
+    background-color: #ddd;
+}
+
+.ticket-table th,
+.queue-table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.ticket-table td,
+.queue-table td {
+    text-align: left;
+}
+.title-bar-text {
+    background-color: #007bff; /* Background color */
+    color: white; /* Text color */
+    padding: 20px; /* Padding around the text */
+    text-align: center; /* Center align the text */
+    font-size: 36px; /* Adjust the font size */
+    font-family: Arial, sans-serif; /* Set the font family */
+}
+.top-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+}
+
+.button-container p {
+    margin-right: 10px;
+}
+
+.button-container form {
+    margin: 0;
+}
+
+.button-container button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.button-container button:hover {
+    background-color: #0056b3;
+}
+
+.title-bar-text {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 36px;
+    font-family: Arial, sans-serif;
+}
+
+
     </style>
 </head>
 <body>
-    <div class="button-container" style="position: absolute; top: 20px; right: 20px;">
-        <p>Logged in as {{ request.user.username }}</p>
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
-        <form action="{% url 'password_change' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Change password</button>
-        </form>
-        <form action="{% url 'tickets:ticket_list' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">View Ticket List</button>
-        </form>
-        <form action="{% url 'tickets:dashboard' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Return to Dashboard</button>
-        </form>
+    <div class="top-bar">
+        <div class="button-container">
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+            <form action="{% url 'password_change' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Change password</button>
+            </form>
+            <form action="{% url 'tickets:ticket_list' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">View Ticket List</button>
+            </form>
+            <form action="{% url 'tickets:dashboard' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Return to Dashboard</button>
+            </form>
+        </div>
     </div>
+
     <div class="window">
         <div class="title-bar">
             <div class="title-bar-text">Ticket DJ Dashboard</div>
         </div>
+        <p>Logged in as {{ request.user.username }}</p>
         <div class="window-body">
             <div id="content">
                 {% block content %}
