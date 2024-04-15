@@ -3,9 +3,14 @@ from django.contrib.auth.decorators import login_required
 import pyodbc
 from django.http import HttpResponseRedirect
 import uuid
+
 import datetime
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.db.models.functions import TruncDate
+from django.db.models import Count
+from tickets.models import Ticket
+from datetime import datetime, timedelta
 
 @login_required
 def dashboard(request):
@@ -191,6 +196,24 @@ def modify_ticket(request, ticket_id):
     else:
         return render(request, 'tickets/unauthorized.html')
 
+@login_required
+def search_ticket_by_id(request):
+    if request.method == 'GET':
+        ticket_id = request.GET.get('ticket_id')
+        if ticket_id:
+            conn = db_connect()
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT * FROM Ticket WHERE Ticket_Id = ?", ticket_id)
+            ticket = cursor.fetchone()
+            cursor.close()
+            conn.close()
+
+            if not ticket:
+                return render(request, 'tickets/not_found.html', {'ticket_id': ticket_id})
+            else:
+                return render(request, 'tickets/ticket_detail.html', {'ticket': ticket})
+    return render(request, 'tickets/search_ticket.html')
 
 @login_required
 def add_note(request, ticket_id):
