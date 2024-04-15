@@ -189,6 +189,7 @@
 </head>
 <body>
     <div class="top-bar">
+        <p>Logged in as {{ request.user.username }}</p>
         <div class="button-container">
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
@@ -211,9 +212,9 @@
 
     <div class="window">
         <div class="title-bar">
-            <div class="title-bar-text">Ticket DJ Dashboard</div>
+            <div class="title-bar-text">Ticket Dashboard</div>
         </div>
-        <p>Logged in as {{ request.user.username }}</p>
+        
         <div class="window-body">
             <div id="content">
                 {% block content %}

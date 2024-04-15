@@ -57,7 +57,7 @@
                 </thead>
                 <tbody>
                     {% for ticket in tickets %}
-                    <tr>
+                    <tr onclick="window.location='{% url 'tickets:ticket_detail' ticket.ticket_id %}'" style="cursor: pointer;">
                         <td>{{ ticket.ticket_id }}</td>
                         <td>{{ ticket.issue_type }}</td>
                         <td>{{ ticket.priority }}</td>

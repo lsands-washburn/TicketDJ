@@ -43,7 +43,7 @@ def create_ticket(request):
         description = request.POST.get('description')
         priority = request.POST.get('priority')
         created_by = request.user.username
-        created_datetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        created_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         ticket_id = "T" + str(uuid.uuid4())[:9]
         ticket_status = "Open"
 
@@ -223,7 +223,7 @@ def add_note(request, ticket_id):
 
     note_text = request.POST.get('note')
     note_id = "N" + str(uuid.uuid4())[:9]
-    created_datetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    created_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     cursor.execute("INSERT INTO Note (note_id, ticket_id, note, created_datetime, created_by) VALUES (?, ?, ?, ?, ?)", note_id, ticket_id, note_text, created_datetime, request.user.username)
 
     conn.commit()
