@@ -14,6 +14,7 @@ urlpatterns = [
     path('modify_ticket/<ticket_id>/', views.modify_ticket, name='modify_ticket'),
     path('ticket/<ticket_id>/update/', views.update_ticket, name = 'update_ticket'),
     path('admin_panel/', views.admin_panel, name='admin_panel'),
+    path('search_ticket_by_id/', views.search_ticket_by_id, name='search_ticket_by_id'),
     
 ]
 

@@ -1,14 +1,47 @@
 {% extends "tickets/base.html" %}
 
 {% block title %}Dashboard{% endblock %}
+
 {% block content %}
+
     <div class="Window" style="background-color: white; padding: 20px; height: auto;">
         <div class="title-bar">
             <div class="title-bar-text">Ticket List</div>
-          </div>
-          <br>
+        </div>
+        <br>
+        <div class="filter-section">
+            <label for="issue-type-filter">Issue Type:</label>
+            <select id="issue-type-filter">
+                <option value="all">All</option>
+                <option value="bug">Bug</option>
+                <option value="feature request">Feature Request</option>
+                <option value="question">Question</option>
+                <option value="other">Other</option>
+            </select>
+<br> 
+            <label for="priority-filter">Priority:</label>
+            <select id="priority-filter">
+                <option value="all">All</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="urgent">Urgent</option>
+            </select>
+<br>
+            <label for="status-filter">Status:</label>
+            <select id="status-filter">
+                <option value="all">All</option>
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
+                <option value="in progress">In Progress</option>
+            </select>
+<br>
+            <label for="ticket-id-search">Search Ticket ID:</label>
+            <input type="text" id="ticket-id-search">
+        </div>
+
         <div class="sunken-panel" style="height: auto; width: auto; overflow-x: auto;">
-            <table class="interactive" style="font-size: 10px;">
+            <table id="ticket-table" class="interactive" style="font-size: 10px;">
                 <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
                     <tr>
                         <th>Ticket ID</th>
@@ -24,7 +57,7 @@
                 </thead>
                 <tbody>
                     {% for ticket in tickets %}
-                    <tr onclick="window.location='{% url 'tickets:ticket_detail' ticket.ticket_id %}'" style="cursor: pointer;">
+                    <tr>
                         <td>{{ ticket.ticket_id }}</td>
                         <td>{{ ticket.issue_type }}</td>
                         <td>{{ ticket.priority }}</td>
@@ -40,4 +73,58 @@
             </table>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const issueTypeFilter = document.getElementById("issue-type-filter");
+            const priorityFilter = document.getElementById("priority-filter");
+            const statusFilter = document.getElementById("status-filter");
+            const ticketIdSearch = document.getElementById("ticket-id-search");
+            const ticketTable = document.getElementById("ticket-table").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+            issueTypeFilter.addEventListener("change", filterTable);
+            priorityFilter.addEventListener("change", filterTable);
+            statusFilter.addEventListener("change", filterTable);
+            ticketIdSearch.addEventListener("keyup", filterTable);
+
+            function filterTable() {
+                const issueTypeValue = issueTypeFilter.value.toLowerCase();
+                const priorityValue = priorityFilter.value.toLowerCase();
+                const statusValue = statusFilter.value.toLowerCase();
+                const ticketIdValue = ticketIdSearch.value.trim().toLowerCase();
+
+                for (let i = 0; i < ticketTable.length; i++) {
+                    let ticketRow = ticketTable[i];
+                    let ticketId = ticketRow.getElementsByTagName("td")[0];
+                    let issueType = ticketRow.getElementsByTagName("td")[1];
+                    let priority = ticketRow.getElementsByTagName("td")[2];
+                    let status = ticketRow.getElementsByTagName("td")[8];
+
+                    let display = true;
+
+                    if (issueTypeValue !== "all" && issueType.innerHTML.toLowerCase() !== issueTypeValue) {
+                        display = false;
+                    }
+
+                    if (priorityValue !== "all" && priority.innerHTML.toLowerCase() !== priorityValue) {
+                        display = false;
+                    }
+
+                    if (statusValue !== "all" && status.innerHTML.toLowerCase() !== statusValue) {
+                        display = false;
+                    }
+
+                    if (ticketIdValue && ticketId.innerHTML.toLowerCase().indexOf(ticketIdValue) === -1) {
+                        display = false;
+                    }
+
+                    if (display) {
+                        ticketRow.style.display = "";
+                    } else {
+                        ticketRow.style.display = "none";
+                    }
+                }
+            }
+        });
+    </script>
 {% endblock %}

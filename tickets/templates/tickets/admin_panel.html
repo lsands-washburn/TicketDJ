@@ -4,37 +4,173 @@
 {% block title %}Admin Panel{% endblock %}
 
 {% block content %}
-<div class="ticket-statistics">
-    <h2>Ticket Statistics</h2>
-    <table class="statistics-table">
-        <thead>
-            <tr>
-                <th>Query</th>
-                <th>Label</th>
-                <th>Result</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Ticket Status Distribution</td>
-                <td>Ticket Status</td>
-                <td>
-                    {% for status in ticket_status_distribution %}
-                        {{ status.ticket_status }}: {{ status.count }}<br>
-                    {% endfor %}
-                </td>
-            </tr>
-            <tr>
-                <td>Issue Type Distribution</td>
-                <td>Issue Type</td>
-                <td>
-                    {% for issue_type in issue_type_distribution %}
-                        {{ issue_type.issue_type }}: {{ issue_type.count }}<br>
-                    {% endfor %}
-                </td>
-            </tr>
-            
-        </tbody>
-    </table>
+<div class="Window" style="background-color: white; padding: 20px; height: auto;">
+    <div class="title-bar">
+        <div class="title-bar-text">Ticket Statistics</div>
+    </div>
+    <br>
+    <div class="ticket-table">
+        <table id="statistics-table" class="interactive" style="font-size: 10px;">
+            <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
+                <tr>
+                    <th>Query</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Ticket Status</td>
+                    <td>
+                        <canvas id="ticketStatusChart" width="400" height="200"></canvas>
+                        <!-- Chart will be drawn here -->
+                    </td>
+                </tr>
+                <tr>
+                    <td>Issue Type</td>
+                    <td>
+                        <canvas id="issueTypeChart" width="400" height="200"></canvas>
+                        <!-- Chart will be drawn here -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<div class="Window" style="background-color: white; padding: 20px; height: auto;">
+    <div class="title-bar">
+        <div class="title-bar-text">Custom Graph</div>
+    </div>
+    <br>
+    <!-- Form for selecting X and Y axes data and chart type -->
+    <form id="graphForm">
+        <label for="xAxisData">X Axis Data:</label>
+        <select id="xAxisData">
+            <option value="data1">Data 1</option>
+            <option value="data2">Data 2</option>
+            <!-- Add more options as needed -->
+        </select>
+
+        <label for="yAxisData">Y Axis Data:</label>
+        <select id="yAxisData">
+            <option value="data1">Data 1</option>
+            <option value="data2">Data 2</option>
+            <!-- Add more options as needed -->
+        </select>
+
+        <label for="chartType">Chart Type:</label>
+        <select id="chartType">
+            <option value="line">Line Chart</option>
+            <option value="bar">Bar Chart</option>
+            <option value="pie">Pie Chart</option>
+            <!-- Add more options as needed -->
+        </select>
+
+        <button type="button" onclick="generateChart()">Generate Chart</button>
+    </form>
+
+    <!-- Canvas element for rendering the chart -->
+    <canvas id="customChart" width="400" height="200"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js library -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Data for Ticket Status Distribution
+        var ticketStatusData = {
+            labels: [{% for status in ticket_status_distribution %}"{{ status.ticket_status }}", {% endfor %}],
+            datasets: [{
+                label: 'Ticket Status Distribution',
+                data: [{% for status in ticket_status_distribution %}{{ status.count }}, {% endfor %}],
+                backgroundColor: 'rgba(54, 162, 235, 0.5)', // Bar color
+                borderColor: 'rgba(54, 162, 235, 1)', // Border color
+                borderWidth: 1
+            }]
+        };
+
+        // Data for Issue Type Distribution
+        var issueTypeData = {
+            labels: [{% for issue_type in issue_type_distribution %}"{{ issue_type.issue_type }}", {% endfor %}],
+            datasets: [{
+                label: 'Issue Type Distribution',
+                data: [{% for issue_type in issue_type_distribution %}{{ issue_type.count }}, {% endfor %}],
+                backgroundColor: 'rgba(255, 99, 132, 0.5)', // Bar color
+                borderColor: 'rgba(255, 99, 132, 1)', // Border color
+                borderWidth: 1
+            }]
+        };
+
+        // Get the canvas elements
+        var ticketStatusCanvas = document.getElementById('ticketStatusChart').getContext('2d');
+        var issueTypeCanvas = document.getElementById('issueTypeChart').getContext('2d');
+
+        // Create the bar charts
+        var ticketStatusChart = new Chart(ticketStatusCanvas, {
+            type: 'bar',
+            data: ticketStatusData,
+            options: {
+                responsive: false, // Set to true for responsiveness
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true // Start y-axis from 0
+                        }
+                    }]
+                }
+            }
+        });
+
+        var issueTypeChart = new Chart(issueTypeCanvas, {
+            type: 'bar',
+            data: issueTypeData,
+            options: {
+                responsive: false, // Set to true for responsiveness
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true // Start y-axis from 0
+                        }
+                    }]
+                }
+            }
+        });
+    });
+
+    function generateChart() {
+        var xAxisData = document.getElementById('xAxisData').value;
+        var yAxisData = document.getElementById('yAxisData').value;
+        var chartType = document.getElementById('chartType').value;
+
+        var data = {
+            labels: ['Label 1', 'Label 2', 'Label 3'], // Sample labels
+            datasets: [{
+                label: yAxisData,
+                data: [10, 20, 30], // Sample data
+                backgroundColor: 'rgba(54, 162, 235, 0.5)', // Sample background color
+                borderColor: 'rgba(54, 162, 235, 1)', // Sample border color
+                borderWidth: 1
+            }]
+        };
+
+        var options = {
+            responsive: false, // Set to true for responsiveness
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true // Start y-axis from 0
+                    }
+                }]
+            }
+        };
+
+        var ctx = document.getElementById('customChart').getContext('2d');
+        var customChart = new Chart(ctx, {
+            type: chartType,
+            data: data,
+            options: options
+        });
+    }
+</script>
+
 {% endblock %}
