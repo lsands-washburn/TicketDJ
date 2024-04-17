@@ -43,7 +43,7 @@ def create_ticket(request):
         description = request.POST.get('description')
         priority = request.POST.get('priority')
         created_by = request.user.username
-        created_datetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        created_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         ticket_id = "T" + str(uuid.uuid4())[:9]
         ticket_status = "Open"
 
@@ -126,7 +126,7 @@ def ticket_detail(request, ticket_id):
         # Handle case where ticket is not found
         return render(request, 'tickets/not_found.html', {'ticket_id': ticket_id})
 
-    if request.user.groups.filter(name='Technician').exists() or ticket.created_by == request.user.username:
+    if request.user.groups.filter(name='Technician').exists() or request.user.is_staff or ticket.created_by == request.user.username:
         cursor.execute("SELECT * FROM Note WHERE Ticket_Id = ?", ticket_id)
         notes = cursor.fetchall()
         
@@ -153,21 +153,25 @@ def update_ticket(request, ticket_id):
             priority = request.POST.get('priority')
             assigned_to = request.POST.get('assigned_to')
             ticket_status = request.POST.get('ticket_status')
+            modified_dattime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             cursor.execute("""
                 UPDATE Ticket
                 SET issue_type = ?,
                     description = ?,
                     priority = ?,
                     assigned_to = ?,
-                    ticket_status = ?
+                    ticket_status = ?,
+                           modified_datetime = ?
                     WHERE ticket_id = ?
+                           
                 """,
                 issue_type,
                 description,
                 priority,
                 assigned_to,
                 ticket_status,
-                ticket_id
+                ticket_id,
+                modified_dattime
                 )
             conn.commit()
             cursor.close()
@@ -223,7 +227,7 @@ def add_note(request, ticket_id):
 
     note_text = request.POST.get('note')
     note_id = "N" + str(uuid.uuid4())[:9]
-    created_datetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    created_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     cursor.execute("INSERT INTO Note (note_id, ticket_id, note, created_datetime, created_by) VALUES (?, ?, ?, ?, ?)", note_id, ticket_id, note_text, created_datetime, request.user.username)
 
     conn.commit()

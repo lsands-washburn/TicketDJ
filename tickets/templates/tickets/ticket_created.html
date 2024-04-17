@@ -1,18 +1,27 @@
-{% extends "base.html" %}
+{% extends "tickets/base.html" %}
 {% block title %}Ticket Created{% endblock %}
 
 {% block content %}
-<center>
-    <h1>Ticket Created</h1>
+<div class="ticket-table-container">
     <p>Your ticket has been successfully created with the following details:</p>
-    <ul>
-        <li><strong>Issue Type:</strong> {{ ticket_info.issue_type }}</li>
-        <li><strong>Description:</strong> {{ ticket_info.description }}</li>
-        <li><strong>Priority:</strong> {{ ticket_info.priority }}</li>
-    </ul>
+    <table class="ticket-table">
+        <thead>
+            <tr>
+                <th>Issue Type</th>
+                <th>Description</th>
+                <th>Priority</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ ticket_info.issue_type }}</td>
+                <td>{{ ticket_info.description }}</td>
+                <td>{{ ticket_info.priority }}</td>
+            </tr>
+        </tbody>
+    </table>
     <form action="{% url 'dashboard' %}" method="get">
         <button type="submit">Back</button>
     </form>
-</center>
+</div>
 {% endblock %}
-

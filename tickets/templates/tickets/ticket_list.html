@@ -18,7 +18,7 @@
                 <option value="question">Question</option>
                 <option value="other">Other</option>
             </select>
-<br> 
+            <br> 
             <label for="priority-filter">Priority:</label>
             <select id="priority-filter">
                 <option value="all">All</option>
@@ -27,7 +27,7 @@
                 <option value="high">High</option>
                 <option value="urgent">Urgent</option>
             </select>
-<br>
+            <br>
             <label for="status-filter">Status:</label>
             <select id="status-filter">
                 <option value="all">All</option>
@@ -35,9 +35,15 @@
                 <option value="closed">Closed</option>
                 <option value="in progress">In Progress</option>
             </select>
-<br>
+            <br>
             <label for="ticket-id-search">Search Ticket ID:</label>
             <input type="text" id="ticket-id-search">
+            <br>
+            <label for="created-datetime-sort">Sort Created Datetime:</label>
+            <select id="created-datetime-sort">
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
+            </select>
         </div>
 
         <div class="sunken-panel" style="height: auto; width: auto; overflow-x: auto;">
@@ -57,7 +63,7 @@
                 </thead>
                 <tbody>
                     {% for ticket in tickets %}
-                    <tr>
+                    <tr onclick="window.location='{% url 'tickets:ticket_detail' ticket.ticket_id %}'" style="cursor: pointer;">
                         <td>{{ ticket.ticket_id }}</td>
                         <td>{{ ticket.issue_type }}</td>
                         <td>{{ ticket.priority }}</td>
@@ -74,57 +80,88 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const issueTypeFilter = document.getElementById("issue-type-filter");
-            const priorityFilter = document.getElementById("priority-filter");
-            const statusFilter = document.getElementById("status-filter");
-            const ticketIdSearch = document.getElementById("ticket-id-search");
-            const ticketTable = document.getElementById("ticket-table").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const issueTypeFilter = document.getElementById("issue-type-filter");
+        const priorityFilter = document.getElementById("priority-filter");
+        const statusFilter = document.getElementById("status-filter");
+        const ticketIdSearch = document.getElementById("ticket-id-search");
+        const createdDatetimeSort = document.getElementById("created-datetime-sort");
+        const ticketTable = document.getElementById("ticket-table").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 
-            issueTypeFilter.addEventListener("change", filterTable);
-            priorityFilter.addEventListener("change", filterTable);
-            statusFilter.addEventListener("change", filterTable);
-            ticketIdSearch.addEventListener("keyup", filterTable);
+        issueTypeFilter.addEventListener("change", filterTable);
+        priorityFilter.addEventListener("change", filterTable);
+        statusFilter.addEventListener("change", filterTable);
+        ticketIdSearch.addEventListener("keyup", filterTable);
+        createdDatetimeSort.addEventListener("change", filterTable);
 
-            function filterTable() {
-                const issueTypeValue = issueTypeFilter.value.toLowerCase();
-                const priorityValue = priorityFilter.value.toLowerCase();
-                const statusValue = statusFilter.value.toLowerCase();
-                const ticketIdValue = ticketIdSearch.value.trim().toLowerCase();
+        function filterTable() {
+            const issueTypeValue = issueTypeFilter.value.toLowerCase();
+            const priorityValue = priorityFilter.value.toLowerCase();
+            const statusValue = statusFilter.value.toLowerCase();
+            const ticketIdValue = ticketIdSearch.value.trim().toLowerCase();
+            const createdDatetimeSortValue = createdDatetimeSort.value;
 
-                for (let i = 0; i < ticketTable.length; i++) {
-                    let ticketRow = ticketTable[i];
-                    let ticketId = ticketRow.getElementsByTagName("td")[0];
-                    let issueType = ticketRow.getElementsByTagName("td")[1];
-                    let priority = ticketRow.getElementsByTagName("td")[2];
-                    let status = ticketRow.getElementsByTagName("td")[8];
+            // Filter rows based on selected filter options
+            for (let i = 0; i < ticketTable.length; i++) {
+                let ticketRow = ticketTable[i];
+                let ticketId = ticketRow.getElementsByTagName("td")[0];
+                let issueType = ticketRow.getElementsByTagName("td")[1];
+                let priority = ticketRow.getElementsByTagName("td")[2];
+                let status = ticketRow.getElementsByTagName("td")[8];
 
-                    let display = true;
+                let display = true;
 
-                    if (issueTypeValue !== "all" && issueType.innerHTML.toLowerCase() !== issueTypeValue) {
-                        display = false;
-                    }
+                if (issueTypeValue !== "all" && issueType.innerHTML.toLowerCase() !== issueTypeValue) {
+                    display = false;
+                }
 
-                    if (priorityValue !== "all" && priority.innerHTML.toLowerCase() !== priorityValue) {
-                        display = false;
-                    }
+                if (priorityValue !== "all" && priority.innerHTML.toLowerCase() !== priorityValue) {
+                    display = false;
+                }
 
-                    if (statusValue !== "all" && status.innerHTML.toLowerCase() !== statusValue) {
-                        display = false;
-                    }
+                if (statusValue !== "all" && status.innerHTML.toLowerCase() !== statusValue) {
+                    display = false;
+                }
 
-                    if (ticketIdValue && ticketId.innerHTML.toLowerCase().indexOf(ticketIdValue) === -1) {
-                        display = false;
-                    }
+                if (ticketIdValue && ticketId.innerHTML.toLowerCase().indexOf(ticketIdValue) === -1) {
+                    display = false;
+                }
 
-                    if (display) {
-                        ticketRow.style.display = "";
-                    } else {
-                        ticketRow.style.display = "none";
-                    }
+                if (display) {
+                    ticketRow.style.display = "";
+                } else {
+                    ticketRow.style.display = "none";
                 }
             }
-        });
-    </script>
+
+            // Sort rows based on created datetime
+            if (createdDatetimeSortValue !== "none") {
+                const rows = Array.from(ticketTable);
+                rows.sort((rowA, rowB) => {
+                    const datetimeA = parseDate(rowA.getElementsByTagName("td")[5].textContent);
+                    const datetimeB = parseDate(rowB.getElementsByTagName("td")[5].textContent);
+                    if (createdDatetimeSortValue === "asc") {
+                        return datetimeA - datetimeB;
+                    } else {
+                        return datetimeB - datetimeA;
+                    }
+                });
+
+                // Reorder rows in table
+                const tbody = ticketTable[0].parentNode;
+                rows.forEach(row => {
+                    tbody.appendChild(row);
+                });
+            }
+        }
+
+        // Function to parse date string into a Moment.js object
+        function parseDate(dateString) {
+            return moment(dateString, "MMMM D, YYYY, h:mm a");
+        }
+    });
+</script>
+
 {% endblock %}

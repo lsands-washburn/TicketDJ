@@ -12,10 +12,10 @@
     <style>
         /* Add custom styles here */
         body {
-            background-color: #D5F1FF;
+            background-color: #ffffff;
             background-image: url({% static "background.jpg" %});
             background-size: cover;
-            background-repeat: no-repeat;
+            background-repeat: repeat;
             background-position: center;
             font-family: 'Muli', sans-serif;
             line-height: 1.6;
@@ -99,13 +99,17 @@
     font-size: 36px; /* Adjust the font size */
     font-family: Arial, sans-serif; /* Set the font family */
 }
+
     </style>
 </head>
 <body>
-    <div class="window">
+    <center>
         <div class="title-bar">
-            <div class="title-bar-text">Ticket Dashboard</div>
+            <div class="title-bar-text centered-text">Ticket Dashboard</div>
         </div>
+    </center>
+    <div class="window">
+        
         <div class="window-body">
             <div id="content">
                 {% block content %}
@@ -113,6 +117,7 @@
             </div>
         </div>
     </div>
+
     <footer>
         &copy; {% now "Y" %} HEART Inc. | 1700 SW College Ave, Topeka, KS 66621 | Phone: 785.670.1010
     </footer>
