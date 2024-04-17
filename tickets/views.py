@@ -153,21 +153,25 @@ def update_ticket(request, ticket_id):
             priority = request.POST.get('priority')
             assigned_to = request.POST.get('assigned_to')
             ticket_status = request.POST.get('ticket_status')
+            modified_dattime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             cursor.execute("""
                 UPDATE Ticket
                 SET issue_type = ?,
                     description = ?,
                     priority = ?,
                     assigned_to = ?,
-                    ticket_status = ?
+                    ticket_status = ?,
+                           modified_datetime = ?
                     WHERE ticket_id = ?
+                           
                 """,
                 issue_type,
                 description,
                 priority,
                 assigned_to,
                 ticket_status,
-                ticket_id
+                ticket_id,
+                modified_dattime
                 )
             conn.commit()
             cursor.close()
