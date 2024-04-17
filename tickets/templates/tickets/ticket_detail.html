@@ -7,75 +7,75 @@
             <div class="title-bar-text">Ticket Detail</div>
         </div>
         <br>
-        <div class="container">
-            <div style="background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                <h2>Ticket Details</h2>
-                <table>
-                    <tr>
-                        <th>Ticket ID</th>
-                        <td>{{ ticket.ticket_id }}</td>
-                    </tr>
-                    <tr>
-                        <th>Issue Type</th>
-                        <td>{{ ticket.issue_type }}</td>
-                    </tr>
-                    <tr>
-                        <th>Description</th>
-                        <td>{{ ticket.description }}</td>
-                    </tr>
-                    <tr>
-                        <th>Priority</th>
-                        <td>{{ ticket.priority }}</td>
-                    </tr>
-                    <tr>
-                        <th>Assigned To</th>
-                        <td>{{ ticket.assigned_to }}</td>
-                    </tr>
-                    <tr>
-                        <th>Created By</th>
-                        <td>{{ ticket.created_by }}</td>
-                    </tr>
-                    <tr>
-                        <th>Created Datetime</th>
-                        <td>{{ ticket.created_datetime }}</td>
-                    </tr>
-                    <tr>
-                        <th>Closed Datetime</th>
-                        <td>{{ ticket.closed_datetime }}</td>
-                    </tr>
-                    <tr>
-                        <th>Modified Datetime</th>
-                        <td>{{ ticket.modified_datetime }}</td>
-                    </tr>
-                    <tr>
-                        <th>Ticket Status</th>
-                        <td>{{ ticket.ticket_status }}</td>
-                    </tr>
-                </table>
+        
+        <div class="ticket-table-container">
+            <h2>Ticket Details</h2>
+            <table class="ticket-table">
+                <tr>
+                    <th>Ticket ID</th>
+                    <td style="word-wrap: break-word;">{{ ticket.ticket_id }}</td>
+                </tr>
+                <tr>
+                    <th>Issue Type</th>
+                    <td style="word-wrap: break-word;">{{ ticket.issue_type }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td style="word-wrap: break-word;">{{ ticket.description }}</td>
+                </tr>
+                <tr>
+                    <th>Priority</th>
+                    <td style="word-wrap: break-word;">{{ ticket.priority }}</td>
+                </tr>
+                <tr>
+                    <th>Assigned To</th>
+                    <td style="word-wrap: break-word;">{{ ticket.assigned_to }}</td>
+                </tr>
+                <tr>
+                    <th>Created By</th>
+                    <td style="word-wrap: break-word;">{{ ticket.created_by }}</td>
+                </tr>
+                <tr>
+                    <th>Created Datetime</th>
+                    <td>{{ ticket.created_datetime }}</td>
+                </tr>
+                <tr>
+                    <th>Closed Datetime</th>
+                    <td>{{ ticket.closed_datetime }}</td>
+                </tr>
+                <tr>
+                    <th>Modified Datetime</th>
+                    <td>{{ ticket.modified_datetime }}</td>
+                </tr>
+                <tr>
+                    <th>Ticket Status</th>
+                    <td style="word-wrap: break-word;">{{ ticket.ticket_status }}</td>
+                </tr>
+            </table>
             <button onclick="location.href='{% url 'tickets:modify_ticket' ticket.ticket_id %}'">Modify Ticket</button>
-            </div>
-            <div style="background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                <h2>Notes</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Created Datetime</th>
-                            <th>Created By</th>
-                            <th>Note</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for note in notes %}
-                        <tr>
-                            <td>{{ note.created_datetime }}</td>
-                            <td>{{ note.created_by }}</td>
-                            <td>{{ note.note }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <button onclick="document.getElementById('modal').style.display='block'">Add Note</button>
-            </div>
+        </div>
+        
+        <div class="ticket-table-container">
+            <h2>Notes</h2>
+            <table class="ticket-table">
+                <thead>
+                    <tr>
+                        <th>Created Date</th>
+                        <th>Author</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for note in notes %}
+                    <tr>
+                        <td>{{ note.created_datetime }}</td>
+                        <td>{{ note.created_by }}</td>
+                        <td style="word-wrap: break-word;">{{ note.note }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button onclick="document.getElementById('modal').style.display='block'">Add Note</button>
         </div>
     </div>
 
@@ -149,4 +149,5 @@
             cursor: pointer;
         }
     </style>
+</body>
 {% endblock %}

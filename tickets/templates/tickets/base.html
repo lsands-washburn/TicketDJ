@@ -12,10 +12,10 @@
     <style>
         /* Add custom styles here */
         body {
-            background-color: #D5F1FF;
+            background-color: #ffffff;
             background-image: url({% static "background.jpg" %});
             background-size: cover;
-            background-repeat: no-repeat;
+            background-repeat: repeat;
             background-position: center;
             font-family: 'Muli', sans-serif;
             line-height: 1.6;
@@ -183,13 +183,16 @@
     font-size: 36px;
     font-family: Arial, sans-serif;
 }
+.username-paragraph {
+        margin-right: 5px; /* Adjust the margin as needed */
+    }
 
 
     </style>
 </head>
 <body>
     <div class="top-bar">
-        <p>Logged in as {{ request.user.username }}</p>
+        <p class="username-paragraph">Logged in as {{ request.user.username }}</p>
         <div class="button-container">
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
@@ -209,11 +212,15 @@
             </form>
         </div>
     </div>
+    <center>
+    <div class="title-bar">
+        <div class="title-bar-text">Ticket Dashboard</div>
+    </div>
+</center>
 
     <div class="window">
-        <div class="title-bar">
-            <div class="title-bar-text">Ticket Dashboard</div>
-        </div>
+        
+        
         
         <div class="window-body">
             <div id="content">
@@ -221,7 +228,9 @@
                 {% endblock %}
             </div>
         </div>
+
     </div>
+    
     <footer>
         &copy; {% now "Y" %} HEART Inc. | 1700 SW College Ave, Topeka, KS 66621 | Phone: 785.670.1010
     </footer>

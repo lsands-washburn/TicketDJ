@@ -126,7 +126,7 @@ def ticket_detail(request, ticket_id):
         # Handle case where ticket is not found
         return render(request, 'tickets/not_found.html', {'ticket_id': ticket_id})
 
-    if request.user.groups.filter(name='Technician').exists() or ticket.created_by == request.user.username:
+    if request.user.groups.filter(name='Technician').exists() or request.user.is_staff or ticket.created_by == request.user.username:
         cursor.execute("SELECT * FROM Note WHERE Ticket_Id = ?", ticket_id)
         notes = cursor.fetchall()
         
