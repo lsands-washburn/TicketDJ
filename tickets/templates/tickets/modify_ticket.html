@@ -33,7 +33,7 @@
         
                 <label for="assigned_to">Assigned To:</label><br>
                 <select name="assigned_to" id="id_assigned_to">
-                    <option value="None"{% if ticket.priority == None %} selected{% endif %}>None</option>
+                    <option value=""{% if ticket.priority == None %} selected{% endif %}>None</option>
                     {% for user in users %}
                         <option value="{{ user.username }}"{% if ticket.assigned_to == user.username %} selected{% endif %}>{{ user.username }}</option>
                     {% endfor %}
